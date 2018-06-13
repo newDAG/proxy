@@ -1,19 +1,19 @@
 package proxy
-
+ 
 import (
 	"reflect"
 	"testing"
 	"time"
 
-	"github.com/newDAG/common"
-	"github.com/newDAG/ledger"
-	aproxy "github.com/newDAG/proxy/app"
+	"github.com/newdag/common"
+	"github.com/newdag/hashgraph"
+	"github.com/newdag/proxy"
 )
 
 func TestSokcetProxyServer(t *testing.T) {
 	clientAddr := "127.0.0.1:9990"
 	proxyAddr := "127.0.0.1:9991"
-	proxy := aproxy.NewSocketAppProxy(clientAddr, proxyAddr, 1*time.Second, common.NewTestLogger(t))
+	proxy := proxy.NewSocketAppProxy(clientAddr, proxyAddr, 1*time.Second, common.NewTestLogger(t))
 	submitCh := proxy.SubmitCh()
 
 	tx := []byte("the test transaction")
@@ -46,15 +46,15 @@ func TestSokcetProxyServer(t *testing.T) {
 func TestSocketProxyClient(t *testing.T) {
 	clientAddr := "127.0.0.1:9992"
 	proxyAddr := "127.0.0.1:9993"
-	proxy := aproxy.NewSocketAppProxy(clientAddr, proxyAddr, 1*time.Second, common.NewTestLogger(t))
+	proxy := proxy.NewSocketAppProxy(clientAddr, proxyAddr, 1*time.Second, common.NewTestLogger(t))
 
 	dummyClient, err := NewDummySocketClient(clientAddr, proxyAddr, common.NewTestLogger(t))
 	if err != nil {
 		t.Fatal(err)
 	}
-	clientCh := dummyClient.DummyProxy.CommitCh()
+	clientCh := dummyClient.babbleProxy.CommitCh()
 
-	block := ledger.NewBlock(0, 1, [][]byte{[]byte("the test transaction")})
+	block := hashgraph.NewBlock(0, 1, [][]byte{[]byte("the test transaction")})
 
 	// Listen for a request
 	go func() {

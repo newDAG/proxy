@@ -1,8 +1,8 @@
-package app
+package proxy
 
 import (
-	bcrypto "github.com/newDAG/crypto"
-	"github.com/newDAG/ledger"
+	bcrypto "github.com/newdag/crypto"
+	"github.com/newdag/ledger"
 	"github.com/sirupsen/logrus"
 )
 
